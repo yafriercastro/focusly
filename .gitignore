@@ -1,3 +1,4 @@
 db.sqlite3
 capstone/__pycache__
 focusly/__pycache__
+focusly/migrations/__pycache__

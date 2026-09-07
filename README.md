@@ -29,7 +29,8 @@ Built with **Django, HTML, CSS, and vanilla JavaScript**, Focusly combines the w
 
 ## Screenshots
 
-Screenshots will be added as the project progresses.
+![Focusly menú principal](screenshots/focusly.jpeg)
+![Focusly modales](screenshots/focusly%20modal%20añadir%20tarea.jpeg)
 
 ---
 
