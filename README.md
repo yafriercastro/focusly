@@ -1,4 +1,4 @@
-# Focusly
+# Focusly ✏
 
 **Focusly** is a productivity web application currently being developed as my final project for **CS50W: Web Programming with Python and JavaScript**.
 
