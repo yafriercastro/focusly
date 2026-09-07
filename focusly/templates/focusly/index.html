@@ -1,0 +1,254 @@
+    {% load static %}
+
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Focusly</title>
+        <link rel="stylesheet" href="{% static 'focusly/styles.css' %}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/ad83e72a8c.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+
+        <div id="flex-container">
+
+            <header>
+                <nav id="navbar">
+                    <div id="navbar-company">
+                        <a href="#">Focusly<i class="fa-solid fa-pencil"></i></a>
+                    </div>
+
+                    <ul id="navbar-links">
+                        <li><a href="#"><i class="fa-solid fa-rectangle-list"></i>Tareas</a></li>
+                        <li><a href="#"><i class="fa-solid fa-chart-line"></i>Dashboard</a></li>
+                        <li><a href="#"><i class="fa-solid fa-calendar"></i>Calendario</a></li>
+                        <li><a href="#"><i class="fa-solid fa-clock"></i>Focus session</a></li>
+                    </ul>
+
+                    <button id="navbar-hamburger"><i class="fa-solid fa-bars"></i></button>
+                </nav>
+            </header>
+
+            <main>
+                <div id="notifications-container" style="display: none;">
+                    <div id="notification"><i class="fa-solid fa-circle-check"></i> Tarea creada exitosamente.</div>
+                </div>
+
+                <div id="modals-container">
+
+                    <!-- Modal de menú hamburguesa -->
+                     <div id="hamburger-modal-container">
+
+                        <dialog class="modal slide-in-blurred-top" id="hamburger-modal">
+                            <div class="modal-header">
+                                <span class="modal-header-title">Focusly <i class="fa-solid fa-pencil"></i></span>
+                                <button class="modal-header-close-btn"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <ul id="navbar-links">
+                                    <li><a href="#"><i class="fa-solid fa-rectangle-list"></i>Tareas</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-chart-line"></i>Dashboard</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-calendar"></i>Calendario</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-clock"></i>Focus session</a></li>
+                                </ul>
+                            </div>
+                        </dialog>
+
+                     </div>
+
+                    <!-- Modal de añadir/editar tarea -->
+                    <dialog class="modal slide-in-blurred-top" id="tasks-modal">
+                        <div class="modal-header">
+                            <span class="modal-header-title">Añadir tarea <i class="fa-solid fa-plus"></i></span>
+                            <button class="modal-header-close-btn"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+
+                                <label for="form-task-title">Titulo: </label>
+                                <input type="text" name="task-title" id="form-task-title" required>
+
+                                <label for="form-task-description">Descripción (opcional): </label>
+                                <textarea name="task-description" id="form-task-description" rows="3"></textarea>
+
+                                <label for="form-task-priority">Prioridad (1-3): </label>
+                                <select name="task-priority" id="form-task-priority" required>
+                                    <option value="" selected disabled>Seleccione una opción</option>
+                                    <option value="flexible">1 - Flexible</option>
+                                    <option value="importante">2 - Importante</option>
+                                    <option value="urgente">3 - Urgente</option>
+                                </select>
+                                
+                                <label for="form-task-date">Fecha límite: </label>
+                                <input type="date" name="task-date" id="form-task-date" required>
+
+                                <button type="submit">Guardar <i class="fa-solid fa-floppy-disk"></i></button>
+                            </form>
+                        </div>
+
+                    </dialog>
+
+                    <!-- Modal de opciones de tarea -->
+                    <dialog class="modal slide-in-blurred-top" id="tasks-options-modal">
+                        <div class="modal-header">
+                            <span class="modal-header-title">Opciones de la tarea <i class="fa-solid fa-list-check"></i></span>
+                            <button class="modal-header-close-btn"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <ul id="navbar-links">
+                                <li><a href="#"><i class="fa-solid fa-pencil"></i> Editar </a></li>
+                                <li><a href="#"><i class="fa-solid fa-trash"></i> Eliminar</a></li>
+                                <li><a href="#"><i class="fa-solid fa-clock"></i> Añadir a focus session</a></li>
+                            </ul>
+                        </div>
+                    </dialog>
+
+                    <!-- Modal de confirmación -->
+                    <dialog class="modal slide-in-blurred-top" id="confirmation-modal">
+                        <div class="modal-header">
+                            <span class="modal-header-title">Confirmación <i class="fa-solid fa-circle-exclamation"></i></span>
+                            <button class="modal-header-close-btn"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <span id="confirmation-modal-title">¿Está seguro que desea eliminar esta tarea?</span>
+                            <div id="confirmation-modal-buttons-wrapper">
+                                <a href="#">Sí <i class="fa-solid fa-circle-check"></i></a>
+                                <button>No <i class="fa-solid fa-circle-xmark"></i></button>
+                            </div>
+                        </div>
+
+                    </dialog>
+                     
+                </div>
+
+                <aside id="ai-chat">
+                    <span id="ai-chat-title">Asistente <i class="fa-solid fa-robot"></i></span>
+
+                    <div id="ai-chat-conversation">
+                        <div class="ai-chat-user">
+                            <i class="fa-solid fa-user ai-chat-user-icon"></i>
+                            <div class="ai-chat-user-textarea">¿Dónde puedo añadir una tarea?</div>
+                        </div>
+
+                        <div class="ai-chat-ai">
+                            <div class="ai-chat-ai-textarea">Tan solo debes presionar el botón de +, y llenar los datos que te aparecen.</div>
+                            <i class="fa-solid fa-robot ai-chat-ai-icon"></i>
+                        </div>
+
+                        <div class="ai-chat-ai">
+                            <div class="ai-chat-ai-textarea">¿Algo más en qué necesites ayuda?</div>
+                            <i class="fa-solid fa-robot ai-chat-ai-icon"></i>
+                        </div>
+
+                    </div>
+
+                    <div id="ai-chat-user-interaction">
+                        <textarea id="ai-chat-textarea" placeholder="Pregunta lo que quieras"></textarea>
+                        <button id="ai-chat-textarea-send-message"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+
+                </aside>
+
+                <div id="main-content">
+
+                    <div id="streak-container">
+                        <span id="streak-title">Tu racha <i class="fa-solid fa-fire"></i></span> 
+
+                        <div id="streak-body">
+                            <div id="streak-summary">
+                                <div id="streak-summary-icons">
+                                    <i class="fa-solid fa-fire"></i><i id="streak-status" class="fa-solid fa-heart-crack"></i>
+                                </div>
+                                Nivel de racha actual: 0
+                            </div>
+                            <div id="streak-message">
+                                No has hecho ninguna tarea. ¿Qué te parece si haces una tarea pequeña hoy?
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tasks-container">
+
+                        <div id="tasks-header">
+                            
+                            <div id="tasks-header-info">
+                                <div id="tasks-header-title"><i class="fa-solid fa-list-ul"></i>Lista de tareas</div>
+
+                                <div id="tasks-header-tabs">
+                                    <button class="tasks-header-tabs-body">
+                                        Todas las tareas <i class="fa-solid fa-pencil"></i> <span class="tasks-header-tabs-body-number">1</span>
+                                    </button>
+
+                                    <button class="tasks-header-tabs-body">
+                                        Completadas <i class="fa-solid fa-check"></i> <span class="tasks-header-tabs-body-number">0</span>
+                                    </button>
+
+                                    <button class="tasks-header-tabs-body">
+                                        Pendientes <i class="fa-solid fa-hourglass-half"></i> <span class="tasks-header-tabs-body-number">1</span>
+                                    </button>
+                                </div>
+                                
+                            </div>
+
+                        </div>
+
+                        <ul id="tasks-body">
+
+                                <li class="task-item">
+
+                                    <div class="task-item-header">
+                                        <span class="task-item-title-wrapper">
+                                            <button class="task-item-complete-btn" title="Marcar tarea como completada/no completada."><i class="fa-solid fa-hourglass-half"></i></button> 
+                                             <span class="task-item-title">Implementar el back-end del chat con IA</span>
+                                        </span>
+
+                                        <div class="task-item-info">  
+                                            <span class="task-item-date item-info">31/8/2026 <i class="fa-solid fa-calendar"></i></span>
+                                            <span class="task-item-priority item-info">Urgente <i class="fa-solid fa-circle-exclamation"></i></span>
+                                        </div>
+
+                                        <div class="task-item-options">
+                                            <button class="task-item-options-btn item-info"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+
+                                            <div class="task-item-dropdown-menu" style="display: none;">
+                                                <a href="#">Editar <i class="fa-solid fa-pencil"></i></a>
+                                                <a href="#">Eliminar <i class="fa-solid fa-trash"></i></a>
+                                                <a href="#">Añadir a focus session <i class="fa-solid fa-clock"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="task-item-body">
+                                        Crear una API funcional en el views.py y testearla.
+                                    </div>
+
+                                </li>
+
+                        </ul>
+
+                    </div>
+                    
+                </div>
+
+                <div id="buttons-sidebar">
+                    <button id="streak-button" title="Racha"><i class="fa-solid fa-fire"></i></button>
+                    <button id="ai-button" title="Interactuar con la IA"><i class="fa-solid fa-robot"></i></button>
+                    <button id="add-task-button" title="Añadir tarea"><i class="fa-solid fa-plus"></i></button>
+                </div>
+
+            </main>
+
+        </div>
+        
+    </body>
+    </html>
